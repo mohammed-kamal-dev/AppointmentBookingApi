@@ -10,6 +10,7 @@ namespace AppointmentBookingApi.Dtos.Appointment
 
         public double SessionTime { get; set; }
 
+        public double WaitingTime { get; set; }
 
         public Guid PatientId { get; set; }
 

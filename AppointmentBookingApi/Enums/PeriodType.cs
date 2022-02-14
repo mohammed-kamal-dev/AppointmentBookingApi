@@ -3,6 +3,6 @@
     public enum PeriodType
     {
         Morning,
-        Night
+        Evening
     }
 }

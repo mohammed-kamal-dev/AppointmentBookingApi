@@ -10,6 +10,7 @@ namespace AppointmentBookingApi.Entities
 
         public  double SessionTime { get; set; }
 
+        public double WaitingTime { get; set; }
 
         public Guid PatientId { get; set; }
         public Patient Patient { get; set; }
