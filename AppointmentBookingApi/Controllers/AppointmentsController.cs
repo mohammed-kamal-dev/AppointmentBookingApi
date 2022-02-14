@@ -22,6 +22,7 @@ namespace AppointmentBookingApi.Controllers
             _mapper = mapper;
         }
 
+        //Quries
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
@@ -47,7 +48,7 @@ namespace AppointmentBookingApi.Controllers
         }
 
         [HttpGet("Filter")]
-        public async Task<IActionResult> GetAppointment([FromQuery] AppointmentQueryDto appointmentQueryDto)
+        public async Task<IActionResult> GetDoctorAppointments([FromQuery] AppointmentQueryDto appointmentQueryDto)
         {
             var models = await _appointmentRepository.GetAppointmentsByDoctorAndPeriod(appointmentQueryDto);
 
