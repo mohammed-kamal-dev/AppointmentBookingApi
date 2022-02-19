@@ -1,6 +1,7 @@
 ﻿using AppointmentBookingApi.Data.IRepository;
 using AppointmentBookingApi.Dtos.Appointment;
 using AppointmentBookingApi.Entities;
+using AppointmentBookingApi.ResponseWrapper;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,6 @@ namespace AppointmentBookingApi.Data.Repository
         public async Task<List<Appointment>> GetAllAsync()
         {
             var result = await _context.Appointments
-                .Where(x => x.DeletedOn == null)
-                .Include(x => x.Patient)
-                .Include(x => x.Doctor)
-                .Include(x => x.Period)
                 .ToListAsync();
 
             return result;
@@ -32,32 +29,30 @@ namespace AppointmentBookingApi.Data.Repository
         public async Task<Appointment> GetByIdAsync(Guid id)
         {
             var result = await _context.Appointments.AsNoTracking()
-                .Where(x => x.DeletedOn == null)
-                .Include(x => x.Patient)
                 .Include(x => x.Doctor)
-                .Include(x => x.Period)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return result;
         }
 
-        public async Task<List<Appointment>> GetAppointmentsByDoctorAndPeriod(AppointmentQueryDto appointmentQueryDto)
+        public async Task<Response<List<Appointment>>> GetAppointmentsByDoctorId(Guid id)
+        {
+            var result = await _context.Appointments
+                .Where(x => x.DoctorId == id)
+                .ToListAsync();
+
+            return new Response<List<Appointment>>() { Data = result , Count = result.Count};
+        }
+
+        public async Task<List<Appointment>> GetAppointmentsByDoctorAndPeriod(ScheduleQueryDto appointmentQueryDto)
         {
             var query = _context.Appointments
-                .Where(x => x.DeletedOn == null)
-                .Include(x => x.Patient)
                 .Include(x => x.Doctor)
-                .Include(x => x.Period)
                 .AsQueryable();
 
             if (appointmentQueryDto.DoctorId.HasValue)
             { 
                 query = query.Where(x => x.DoctorId == appointmentQueryDto.DoctorId);
-            }
-
-            if (appointmentQueryDto.PeriodId.HasValue)
-            {
-                query = query.Where(x => x.PeriodId == appointmentQueryDto.PeriodId);
             }
 
             var result = await query.ToListAsync();
@@ -83,8 +78,7 @@ namespace AppointmentBookingApi.Data.Repository
 
         public async Task DeleteAsync(Appointment appointment)
         {
-            appointment.DeletedOn = DateTime.Now;
-            _context.Appointments.Update(appointment);
+            _context.Appointments.Remove(appointment);
             await _context.SaveChangesAsync();
         }
 
@@ -94,6 +88,5 @@ namespace AppointmentBookingApi.Data.Repository
             await _context.SaveChangesAsync();
         }
 
-       
     }
 }

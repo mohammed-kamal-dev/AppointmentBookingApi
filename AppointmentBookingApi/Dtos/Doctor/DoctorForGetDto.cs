@@ -8,10 +8,10 @@ namespace AppointmentBookingApi.Dtos.Doctor
     {
         public Guid Id { get; set; }
 
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } 
 
         public string LastName { get; set; }
 
-        public List<AppointmentForGetDto> Appointments { get; set; }
+        public List<ScheduleForGetDto> Schedules { get; set; }
     }
 }

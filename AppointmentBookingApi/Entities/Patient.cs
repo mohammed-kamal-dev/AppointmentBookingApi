@@ -11,6 +11,6 @@ namespace AppointmentBookingApi.Entities
 
         public string LastName { get; set; }
 
-        public List<Appointment> Appointments { get; set; }
+        public List<Schedule> Appointments { get; set; }
     }
 }

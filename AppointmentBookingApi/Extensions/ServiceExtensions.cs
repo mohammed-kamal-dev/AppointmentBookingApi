@@ -74,6 +74,7 @@ namespace AppointmentBookingApi.Extensions
             services.AddScoped<IPeriodRepository, PeriodRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IDoctorRepository, DoctorRepository>();
+            services.AddScoped<IScheduleRepository, ScheduleRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
             services.AddTransient(typeof(IRepository<>), typeof(Repository<>));

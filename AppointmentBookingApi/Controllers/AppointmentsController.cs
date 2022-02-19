@@ -1,6 +1,7 @@
 ﻿using AppointmentBookingApi.Data.IRepository;
 using AppointmentBookingApi.Dtos.Appointment;
 using AppointmentBookingApi.Entities;
+using AppointmentBookingApi.ResponseWrapper;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,7 @@ namespace AppointmentBookingApi.Controllers
         public async Task<IActionResult> GetAll()
         {
 
-            var models = await _appointmentRepository.GetAllAsync();
+            var models = await _appointmentRepository.GetAllAsync(); 
 
             var result = _mapper.Map<List<AppointmentForGetDto>>(models);
 
@@ -47,17 +48,15 @@ namespace AppointmentBookingApi.Controllers
 
         }
 
-        [HttpGet("Filter")]
-        public async Task<IActionResult> GetDoctorAppointments([FromQuery] AppointmentQueryDto appointmentQueryDto)
+        [HttpGet("Doctor/{id}")]
+        public async Task<IActionResult> GetAppointmentsByDoctorId(Guid id)
         {
-            var models = await _appointmentRepository.GetAppointmentsByDoctorAndPeriod(appointmentQueryDto);
-
-            var result = _mapper.Map<List<AppointmentForGetDto>>(models);
+            var models = await _appointmentRepository.GetAppointmentsByDoctorId(id);
+            var result = _mapper.Map<List<AppointmentForGetDto>>(models.Data);
 
             return Ok(result);
         }
 
-        // Commands
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AppointmentForCreateDto appointmentForCreateDto)
         {
@@ -84,7 +83,7 @@ namespace AppointmentBookingApi.Controllers
 
             if (getModel == null) return NotFound();
 
-            var model = _mapper.Map<Period>(appointmentForUpdateDto);
+            var model = _mapper.Map<Appointment>(appointmentForUpdateDto);
 
             var updateModel = _mapper.Map(model, getModel);
 

@@ -1,6 +1,4 @@
 ﻿using AppointmentBookingApi.Dtos.Doctor;
-using AppointmentBookingApi.Dtos.Patient;
-using AppointmentBookingApi.Dtos.Period;
 using System;
 
 namespace AppointmentBookingApi.Dtos.Appointment
@@ -9,19 +7,16 @@ namespace AppointmentBookingApi.Dtos.Appointment
     {
         public Guid Id { get; set; }
 
-        public DateTime Day { get; set; }
-
-        public double SessionTime { get; set; }
-
-        public double WaitingTime { get; set; }
-
-        public Guid PatientId { get; set; }
-        public PatientForGetDto Patient { get; set; }
-
         public Guid DoctorId { get; set; }
-        public SimpleDoctorInfo Doctor { get; set; }
 
-        public Guid PeriodId { get; set; }
-        public PeriodForGetDto Period { get; set; }
+        public string DoctorName { get; set; }
+
+        public string StartTime { get; set; }
+
+        public string EndTime { get; set; }
+
+        public string Period { get; set; }
+
+        public string Day { get; set; }
     }
 }
